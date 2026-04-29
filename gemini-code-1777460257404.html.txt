@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/L Fast Track</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: white; }
+        .card:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+
+    <!-- Main Dashboard -->
+    <div id="home-screen" class="p-6">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-yellow-500">A/L Fast Track 🚀</h1>
+            <p class="text-gray-400">අද ඔයාගේ ඉලක්කය ජයගමු!</p>
+        </header>
+
+        <h2 class="text-xl mb-4 font-semibold">විෂයයන් තෝරන්න</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div onclick="openQuiz()" class="card bg-purple-600 p-6 rounded-2xl flex flex-col items-center justify-center cursor-pointer">
+                <i class="fas fa-movie text-3xl mb-2"></i>
+                <span class="font-medium">Media</span>
+            </div>
+            <div class="card bg-blue-600 p-6 rounded-2xl flex flex-col items-center justify-center opacity-50">
+                <i class="fas fa-gavel text-3xl mb-2"></i>
+                <span class="font-medium">Political</span>
+            </div>
+            <div class="card bg-orange-600 p-6 rounded-2xl flex flex-col items-center justify-center opacity-50">
+                <i class="fas fa-temple-hindu text-3xl mb-2"></i>
+                <span class="font-medium">BC</span>
+            </div>
+            <div class="card bg-green-600 p-6 rounded-2xl flex flex-col items-center justify-center opacity-50">
+                <i class="fas fa-leaf text-3xl mb-2"></i>
+                <span class="font-medium">Agri</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="hidden p-6">
+        <button onclick="goHome()" class="mb-6 text-gray-400"><i class="fas fa-arrow-left"></i> ආපසු</button>
+        
+        <div class="bg-slate-800 p-6 rounded-3xl">
+            <div id="question-container">
+                <h2 id="question-text" class="text-xl font-bold mb-6">ප්‍රශ්නය මෙතන දිස්වේ...</h2>
+                <div id="options-container" class="space-y-4">
+                    <!-- Options will be added here by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "සන්නිවේදනයේ පියා කවුද?", options: ["විල්බර් ශ්‍රාම්", "ලැසවෙල්", "කර්ට් ලෙවින්", "ශනෝන් විවර්"], correct: 0 },
+            { q: "සන්නිවේදනයේ මූලිකාංග කීයද?", options: ["6", "7", "8", "9", "11"], correct: 0 },
+            { q: "සංනිවේදනයේ ස්වරූපයක් නොවේ?", options: ["ශ්‍රාව්‍ය", "අන්තර් පුද්ගල", "වාචික", "අවාචික", "විධිමත්"], correct: 4 },
+            { q: "රූපවාහිනිය යනු?", options: ["ජනමාධ්‍යයකි", "නව මාධ්‍යයකි", "සමාජ මාධ්‍යයකි", "මුද්‍රිත මාධ්‍යයකි"], correct: 0 }
+        ];
+
+        let currentQ = 0;
+
+        function openQuiz() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function goHome() {
+            document.getElementById('home-screen').classList.remove('hidden');
+            document.getElementById('quiz-screen').classList.add('hidden');
+            currentQ = 0;
+        }
+
+        function loadQuestion() {
+            const qData = questions[currentQ];
+            document.getElementById('question-text').innerText = qData.q;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            qData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-4 bg-slate-700 rounded-xl text-left hover:bg-slate-600 transition";
+                btn.innerText = (index + 1) + ". " + opt;
+                btn.onclick = () => checkAnswer(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(index) {
+            if(index === questions[currentQ].correct) {
+                alert("නිවැරදියි! 🎉");
+            } else {
+                alert("වැරදියි! නිවැරදි පිළිතුර: " + questions[currentQ].options[questions[currentQ].correct]);
+            }
+
+            currentQ++;
+            if(currentQ < questions.length) {
+                loadQuestion();
+            } else {
+                alert("ඔබ සියලු ප්‍රශ්න අවසන් කළා! නියමයි!");
+                goHome();
+            }
+        }
+    </script>
+</body>
+</html>
